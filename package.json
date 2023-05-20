@@ -1,0 +1,19 @@
+{
+  "name": "production",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@hsui/core": "^1.6.1",
+    "echarts": "^5.4.2",
+    "h_ui": "^1.48.0"
+  },
+  "devDependencies": {
+    "@hsui/plugin-lint": "^1.0.0",
+    "@hsui/plugin-micro-app": "^1.8.6"
+  },
+  "scripts": {
+    "dev": "hui dev -p 2021 -b",
+    "build": "hui build",
+    "serve": "npm run build && npx http-server ./dist -p 2023"
+}
+}

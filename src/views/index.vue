@@ -51,11 +51,11 @@ export default {
       core.
         fetch({
           method: 'post',
-          url:'http://124.220.32.107:3000/mock/11/user/code',
+          url: '/api1/user/code',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: { phone: this.phone }
+          data: `phone=${this.phone}`
         })
         .then(data => {
           if (data.success) {
@@ -83,16 +83,35 @@ export default {
     },
 
     login() {
-      if (this.phone === '123456' && this.verification === '666') {
-        // 登录成功
-        // 1. 存储 token
-        localStorage.setItem('token', 'Bearer xxxx');
-        // 2. 跳转到后台主页
-        this.$router.push('/module');
-      } else {
-        // 登录失败
-        localStorage.removeItem('token');
-      }
+      core
+        .fetch({
+          method: "post",
+          url: "/api1/user/login",
+          data: {
+            phone: this.phone,
+            code: this.verification,
+          }
+        })
+        .then((res) => {
+          if (res.success) {
+            localStorage.setItem('token', res.data);
+            this.$router.push('/module/production');
+          }
+          else {
+            // 登录失败
+            localStorage.removeItem('token');
+          }
+        });
+      /* if (this.phone === '123456' && this.verification === '666') {
+         // 登录成功
+         // 1. 存储 token
+         localStorage.setItem('token', 'Bearer xxxx');
+         // 2. 跳转到后台主页
+         this.$router.push('/module');
+       } else {
+         // 登录失败
+         localStorage.removeItem('token');
+       }*/
     }
   }
 };

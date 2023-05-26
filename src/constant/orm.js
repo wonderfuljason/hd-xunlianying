@@ -9,7 +9,7 @@ export const PRODUCT_TYPE_ORM = {
     releaseSuccess: '发布成功'
   };
   
-  export const CUSTOMER_TYPE_ORM = {
+  export const customerTypeOrm = {
     1: "个人客户",
     2: "机构客户",
     

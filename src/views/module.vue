@@ -7,10 +7,10 @@
           <router-link to="/module/production">产品管理</router-link>
         </li>
         <li>
-          <router-link to="/module/buy">申购</router-link>
+          <router-link to="/module/buy">基金交易</router-link>
         </li>
         <li>
-          <router-link to="/module/sell">赎回</router-link>
+          <router-link to="/module/sell">新基金申购</router-link>
         </li>
         
         <li>
@@ -42,12 +42,29 @@
 </template>
 
 <script>
+import core from "@hsui/core";
 export default {
   methods: {
     jump(path) {
       this.$hCore.navigate(path);
     },
     logout(){
+      const token = localStorage.getItem('token');
+      core 
+          .fetch({
+            method: "post",
+            url:"/api1/user/logout",
+            headers: {
+            'authorization': this.token,
+            'Content-Type': 'application/x-www-form-urlencoded'
+            },
+          })
+          .then((res)=>{
+            if(res.success){
+              localStorage.setItem('token', '');
+              this.$hCore.navigate('/');
+            }
+          })
       localStorage.setItem('token', '');
       this.$hCore.navigate('/');
     }
@@ -55,19 +72,30 @@ export default {
 };
 </script>
 
+
 <style>
 .layout {
-  display: flex;
+  display: grid;
+  grid-template-columns: 250px 1fr;
   height: 100vh;
 }
 
 .layout-menu-left {
-  flex: 0 0 250px;
   background-color: #333;
   color: #fff;
   padding-top: 20px;
 }
 
+.layout-content {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: auto; /* Enable scrolling if content overflows */
+}
+
+.layout-content-main {
+  background-color: #fff;
+  padding: 20px;
+}
 .layout-menu {
   list-style: none;
   padding: 0;
@@ -92,17 +120,6 @@ export default {
   background-color: #181818;
 }
 
-.layout-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.layout-content-main {
-  flex: 1;
-  background-color: #fff;
-  padding: 20px;
-}
 
 .layout-footer {
   text-align: center;
@@ -130,4 +147,7 @@ export default {
   display: inline-block;
   line-height: 30px;
 }
+
+
+/* Rest of the styles */
 </style>
